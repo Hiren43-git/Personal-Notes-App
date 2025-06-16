@@ -7,8 +7,10 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
+  FocusNode confirmPasswordFocus = FocusNode();
   FocusNode phoneFocus = FocusNode();
 
   bool passwordHidden = true;
@@ -23,43 +25,24 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void validatePassword(
-    String password,
-  ) {
-    if (password.isEmpty) {
-      error = 'Password is required!';
-    } else if (password.length < 6) {
-      error = 'Password must be 6 letter!';
-    } else if (!RegExp(r'[A-Z]').hasMatch(password) &&
-        !RegExp(r'[a-z]').hasMatch(password)) {
-      error = 'Password need at least 1 uppercase & 1 lowercase letter!';
-    } else if (!RegExp(r'[0-9]').hasMatch(password)) {
-      error = 'Password need at least 1 number!';
-    } else {
-      error = null;
-    }
-    notifyListeners();
-  }
-
-  void validateConfirmPassword(
-    String password,
-  ) {
-    if (password.isEmpty) {
-      error = 'Confirm Password is required!';
-    } else if (password.length < 6) {
-      error = 'Confirm Password must be 6 letter!';
-    } else if (!RegExp(r'[A-Z]').hasMatch(password) &&
-        !RegExp(r'[a-z]').hasMatch(password)) {
-      error = 'Confirm Password need at least 1 uppercase or lowercase letter!';
-    } else if (!RegExp(r'[0-9]').hasMatch(password)) {
-      error = 'Confirm Password need at least 1 number!';
-    } else {
-      error = null;
-    }
-    notifyListeners();
-  }
-
   String? error = '';
+  void errorMessage(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  bool validEmail(String value) {
+    final email = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+    return email.hasMatch(value);
+  }
+
+  bool validPassword(String value) {
+    final password = RegExp(r"(?=.*[a-z])(?=.*[0-9]).{6,}$");
+    return password.hasMatch(value);
+  }
 
   void showConfirmPassword() {
     if (conPasswordHidden == true) {
@@ -83,32 +66,18 @@ class AuthProvider extends ChangeNotifier {
   Future<void> login(
       BuildContext context, String email, String password) async {
     setLoading(true);
-    // final res =
     await authService.signInWithEmailAndPassword(email, password);
-
-    // if (res == true) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text('Login Successful !!'),
-    //     ),
-    //   );
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(
-    //       content: Text('Login Successful !!'),
-    //     ),
-    //   );
-    // }
+    print('login');
     setLoading(false);
   }
 
-  Future<void> signUp(String email, String password, String phone) async {
-    await authService.signUpWithEmailAndPassword(email, password, phone);
+  Future<void> signUp(String email, String password) async {
+    await authService.signUpWithEmailAndPassword(email, password);
   }
 
   Future<void> signOut(BuildContext context) async {
     await authService.signOut();
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => LoginScreen(),
       ),

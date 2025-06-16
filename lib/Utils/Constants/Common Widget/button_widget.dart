@@ -5,7 +5,7 @@ import '../../../Modules/Login/Login Screen/Widget/title_style.dart';
 
 class ButtonWidget extends StatefulWidget {
   final String? text;
-  const ButtonWidget({super.key,this.text});
+  const ButtonWidget({super.key, this.text});
 
   @override
   State<ButtonWidget> createState() => _ButtonWidgetState();
@@ -14,8 +14,10 @@ class ButtonWidget extends StatefulWidget {
 class _ButtonWidgetState extends State<ButtonWidget> {
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 52,
+      height: w * 0.12,
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.buttonColor,
@@ -25,7 +27,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
       child: Text(
         widget.text!,
         style: titleStyle.copyWith(
-          fontSize: 18,
+          fontSize: w * 0.044,
           color: AppColors.backgroundColor,
         ),
       ),

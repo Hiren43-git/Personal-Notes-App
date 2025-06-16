@@ -7,6 +7,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final ValueChanged? onSubmit;
+  final FormFieldValidator? validator;
 
   const TextFormFieldWidget({
     super.key,
@@ -14,6 +15,7 @@ class TextFormFieldWidget extends StatefulWidget {
     this.focusNode,
     this.hint,
     this.onSubmit,
+    this.validator,
   });
 
   @override
@@ -23,17 +25,20 @@ class TextFormFieldWidget extends StatefulWidget {
 class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   @override
   Widget build(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+
     return TextFormField(
+      validator: widget.validator,
       focusNode: widget.focusNode,
-      cursorHeight: 24,
+      cursorHeight: w * 0.064,
       cursorColor: AppColors.textColor,
       autocorrect: false,
       controller: widget.controller,
-      style: hintTextStyle,
+      style: hintTextStyle.copyWith(fontSize: w * 0.04266),
       onFieldSubmitted: widget.onSubmit,
       decoration: InputDecoration(
         hintText: widget.hint,
-        hintStyle: hintTextStyle,
+        hintStyle: hintTextStyle.copyWith(fontSize: w * 0.04266),
         filled: true,
         fillColor: AppColors.textBackground,
         contentPadding: EdgeInsets.symmetric(

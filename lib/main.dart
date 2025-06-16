@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:personal_notes_app/Core/Provider/Auth%20Provider/auth_provider.dart';
+import 'package:personal_notes_app/Core/Provider/Note%20Provider/note_provider.dart';
 import 'package:personal_notes_app/Modules/Home/Screens/home_screen.dart';
 import 'package:personal_notes_app/Modules/Login/Login%20Screen/Screens/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -31,10 +32,15 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => NoteProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: (AuthProvider().authService.supabase.auth.currentUser == null)
+            ? LoginScreen()
+            : HomeScreen(),
       ),
     );
   }
