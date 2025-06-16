@@ -12,20 +12,15 @@ class AuthDatabaseService {
   }
 
   Future<AuthResponse> signUpWithEmailAndPassword(
-      String email, String password, String phone) async {
+      String email, String password) async {
     return await supabase.auth.signUp(
-      password: password,
       email: email,
-      phone: phone,
+      password: password,
     );
   }
 
   Future<void> signOut() async {
     await supabase.auth.signOut();
-  }
-
-  Future<void> forgotPassword(String email) async {
-    return await supabase.auth.resetPasswordForEmail(email);
   }
 
   String? getCurrentUser() {

@@ -13,8 +13,8 @@ class _IconWidgetState extends State<IconWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 21,
-      width: 21,
+      height: widget.height,
+      width: widget.height,
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,

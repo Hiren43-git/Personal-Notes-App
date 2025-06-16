@@ -5,5 +5,6 @@ class AppColors {
   static Color backgroundColor = Colors.white;
   static Color textBackground = Color(0xffEFF2F5);
   static Color buttonColor = Color(0xff0B77F2);
+  static Color red = Colors.red;
   static Color textColor = Color.fromARGB(255, 81, 101, 128);
 }
